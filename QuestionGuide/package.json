@@ -1,0 +1,21 @@
+{
+  "name": "questionguide",
+  "version": "1.0.0",
+  "description": "Yahoo Answers-style Q&A platform",
+  "license": "ISC",
+  "author": "Lucas Lima",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "mysql2": "^3.14.0",
+    "nodemon": "^3.1.9",
+    "sequelize": "^6.37.6"
+  }
+}
