@@ -3,6 +3,12 @@ const app = express()
 const bodyParser = require('body-parser')
 const connection = require('./database/database')
 
+const CategoriesController = require('./categories/CategoriesController')
+const ArticleController = require('./articles/ArticlesController')
+
+const Article = require('./articles/Article')
+const Category = require('./categories/Category')
+
 app.set('view engine', 'ejs')
 
 app.use(express.static('public'))
@@ -19,6 +25,10 @@ connection
   .catch((error) => {
     console.error('Erro ao conectar ao banco de dados:', error)
   })
+
+// Routes
+app.use('/', CategoriesController)
+app.use('/', ArticleController)
 
 app.get('/', (req, res) => {
   res.render('index')
