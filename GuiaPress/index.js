@@ -31,7 +31,61 @@ app.use('/', CategoriesController)
 app.use('/', ArticleController)
 
 app.get('/', (req, res) => {
-  res.render('index')
+  Article.findAll({
+    order: [['id', 'DESC']],
+  }).then((articles) => {
+    Category.findAll().then((category) => {
+      res.render('index', { articles: articles, categories: category })
+    })
+  })
+})
+
+app.get('/:slug', (req, res) => {
+  var slug = req.params.slug
+  Article.findOne({
+    where: {
+      slug: slug,
+    },
+  })
+    .then((article) => {
+      if (article != undefined) {
+        Category.findAll().then((category) => {
+          res.render('article', { article: article, categories: category })
+        })
+      } else {
+        res.redirect('/')
+      }
+    })
+    .catch((error) => {
+      console.error('Erro ao buscar o artigo:', error)
+      res.redirect('/')
+    })
+})
+
+app.get('/category/:slug', (req, res) => {
+  var slug = req.params.slug
+  Category.findOne({
+    where: {
+      slug: slug,
+    },
+    include: [{ model: Article }],
+  })
+    .then((category) => {
+      if (category != undefined) {
+        Category.findAll().then((categories) => {
+          res.render('index', {
+            articles: category.articles,
+            categories: categories,
+          })
+        })
+      } else {
+        res.redirect('/')
+      }
+    })
+    .catch((err) => {
+      console.error('Erro ao buscar a categoria:', err)
+      res.redirect('/')
+    })
 })
 
 app.listen(8080, () => {
